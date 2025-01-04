@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<!-- head -->
+<%- include('../layouts/head') %>
+
+    <body>
+        <div class="wrapper">
+            <!-- Header -->
+            <%- include('../layouts/main-header') %>
+                <!-- sidebar -->
+                <%- include('../layouts/side-bar') %>
+                    <div class="main-panel">
+                        <!-- main -->
+                        <%- include('../components/components'); %>
+                            <!-- footer -->
+                            <%- include("../layouts/footer"); %>
+                    </div>
+        </div>
+        <!-- modal -->
+
+    </body>
+    <!-- scripts -->
+    <%- include("../layouts/scripts/main"); %>
+        <%- include("../layouts/scripts/components"); %>
+
+</html>
