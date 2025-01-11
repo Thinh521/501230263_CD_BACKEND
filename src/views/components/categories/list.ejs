@@ -1,0 +1,38 @@
+<div class="content">
+    <div class="container-fluid">
+        <h4 class="page-title">Danh sách sản phẩm</h4>
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-head-bg-success">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">First</th>
+                            <th scope="col">Last</th>
+                            <th scope="col">Handle</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% categories.forEach(function(category, index) { %>
+                            <tr>
+                                <td>
+                                    <%= index %>
+                                </td>
+                                <td>
+                                    <img src="<%= category.image %>" alt="image"
+                                        style="width: 200px; height: auto; object-fit: cover;">
+                                </td>
+                                <td>
+                                    <%= category.code %>
+                                </td>
+                                <td>
+                                    <%= category.name %>
+                                </td>
+                            </tr>
+                            <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
