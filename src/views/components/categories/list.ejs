@@ -1,6 +1,9 @@
 <div class="content">
     <div class="container-fluid">
-        <h4 class="page-title">Danh sách sản phẩm</h4>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <h4 class="page-title" style="margin: 0;">Danh sách sản phẩm</h4>
+            <a href="/categories/create" class="btn btn-default">Tạo loại sản phẩm</a>
+        </div>
         <div class="card">
             <div class="card-body">
                 <table class="table table-head-bg-success">
@@ -16,11 +19,11 @@
                         <% categories.forEach(function(category, index) { %>
                             <tr>
                                 <td>
-                                    <%= index %>
+                                    <%= index+1 %>
                                 </td>
                                 <td>
                                     <img src="<%= category.image %>" alt="image"
-                                        style="width: 200px; height: auto; object-fit: cover;">
+                                        style="width: 100px; height: auto; object-fit: cover; border: 1px solid #ccc;">
                                 </td>
                                 <td>
                                     <%= category.code %>
