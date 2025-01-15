@@ -4,43 +4,94 @@
             <h4 class="page-title" style="margin: 0;">Danh sách sản phẩm</h4>
             <a href="/categories/create" class="btn btn-default">Tạo loại sản phẩm</a>
         </div>
-        <div class="card">
-            <div class="card-body">
-                <table class="table table-head-bg-success">
-                    <thead>
-                        <tr>
-                            <th scope="col">STT</th>
-                            <th scope="col">Image</th>
-                            <th scope="col">Code</th>
-                            <th scope="col">Name</th>
-                            <th scope="col"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% categories.forEach(function(category, index) { %>
-                            <tr>
-                                <td>
-                                    <%= index+1 %>
-                                </td>
-                                <td>
-                                    <img src="<%= category.image %>" alt="image"
-                                        style="width: 100px; height: auto; object-fit: cover; border: 1px solid #ccc;">
-                                </td>
-                                <td>
-                                    <%= category.code %>
-                                </td>
-                                <td>
-                                    <%= category.name %>
-                                </td>
-                                <td>
-                                    <a href="/categories/update/<%=category._id%>"
-                                        class="btn btn-success btn-sm">Sửa</a>
-                                </td>
-                            </tr>
-                            <% }); %>
-                    </tbody>
-                </table>
+        <div class="flex justify-content-end">
+            <div class="form-group max-w-20 flex item-center">
+                <label for="defaultSelect" class="white-space" style="margin-right: 5px;">Sắp xếp</label>
+                <select class="form-control" id="defaultSelect" onchange="changeSort(event)">
+                    <% sortObjects.forEach(function(sortObject) { %>
+                        <% if (sortObject.code === sort) { %>
+                            <option value="<%= sortObject.code %>" selected>
+                                <%= sortObject.name %>
+                            </option>
+                        <% } else { %>
+                            <option value="<%= sortObject.code %>">
+                                <%= sortObject.name %>
+                            </option>
+                        <% } %>
+                    <% }); %>
+                </select>                                             
             </div>
         </div>
+        <% if (categories && categories.length> 0) { %>
+            <div class="card">
+                <div class="card-body">
+                    <table class="table table-head-bg-success">
+                        <thead>
+                            <tr>
+                                <th scope="col">STT</th>
+                                <th scope="col">Image</th>
+                                <th scope="col">Code</th>
+                                <th scope="col">Name</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% categories.forEach(function(category, index) { %>
+                                <tr>
+                                    <td>
+                                        <%= index + 1 %>
+                                    </td>
+                                    <td>
+                                        <img src="<%= category.image %>" alt="image"
+                                            style="width: 100px; height: auto; object-fit: cover; border: 1px solid #ccc;">
+                                    </td>
+                                    <td>
+                                        <%= category.code %>
+                                    </td>
+                                    <td>
+                                        <%= category.name %>
+                                    </td>
+                                    <td>
+                                        <a href="/categories/update/<%= category._id %>"
+                                            class="btn btn-success btn-sm">Sửa</a>
+                                        <a href="/categories/delete/<%= category._id %>"
+                                            class="btn btn-danger btn-sm">Xóa</a>
+                                    </td>
+                                </tr>
+                                <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-body d-flex justify-content-center">
+                    <div class="form-group">
+                        <label for="defaultSelect" class="mr-2">Page Size</label>
+                        <select class="form-control" id="defaultSelect" onchange="changePageSize(event)">
+                            <% [5, 10, 20, 30, 50].forEach(function(pageSizeOption) { %>
+                                <option value="<%= pageSizeOption %>" <%=pageSizeOption===pageSize ? 'selected' : '' %>>
+                                    <%= pageSizeOption %>
+                                </option>
+                                <% }); %>
+                        </select>
+                    </div>
+                    <ul class="pagination">
+                        <li class="page-item <%= page === 1 ? 'disabled' : '' %>">
+                            <a class="page-link" href="#" onclick="prevPage()">«</a>
+                        </li>
+                        <% for (let i=1; i <=countPagination; i++) { %>
+                            <li class="page-item <%= page === i ? 'active' : '' %>">
+                                <a class="page-link" href="#" onclick="changePage(`<%= i %>`)">
+                                    <%= i %>
+                                </a>
+                            </li>
+                            <% } %>
+                                <li class="page-item <%= page === countPagination ? 'disabled' : '' %>">
+                                    <a class="page-link" href="#" onclick="nextPage()">»</a>
+                                </li>
+                    </ul>
+                </div>
+            </div>
+            <% } else { %>
+                <h4 class="page-title">Hiện chưa có loại sản phẩm nào</h4>
+                <% } %>
     </div>
 </div>

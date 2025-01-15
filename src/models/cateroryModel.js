@@ -6,8 +6,10 @@ const categorySchema = new Schema(
     code: String,
     name: String,
     image: String,
+    searchString: String,
     createAt: Date,
     updateAt: Date,
+    deleteAt: Date,
   },
   {
     versionKey: false,
