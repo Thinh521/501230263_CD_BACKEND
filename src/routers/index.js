@@ -1,10 +1,14 @@
 import categoryRoute from "./categoryRoute.js";
+import productRoute from "./productRoute.js";
+import orderRoute from "./orderRoute.js";
 
 export default function routers(app) {
   app.use("/categories", categoryRoute);
+  app.use("/products", productRoute);
+  app.use("/orders", orderRoute);
 
-  app.get("/index", (req, res) => {
-    res.render("pages/index", {
+  app.get("/", (req, res) => {
+    res.render("pages/", {
       title: "Home",
     });
   });

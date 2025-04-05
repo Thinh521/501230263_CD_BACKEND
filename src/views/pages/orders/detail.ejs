@@ -12,18 +12,16 @@
                 <%- include('../../layouts/side-bar') %>
                     <div class="main-panel">
                         <!-- main -->
-                        <%- include('../../components/categories/list'); %>
+                        <%- include('../../components/orders/detail'); %>
                             <!-- footer -->
                             <%- include("../../layouts/footer"); %>
                     </div>
         </div>
-        <%- include('../../components/common/modalCategory'); %>
+        <!-- modal -->
 
     </body>
     <!-- scripts -->
     <%- include("../../layouts/scripts/main"); %>
         <%- include("../../layouts/scripts/components"); %>
-            <%- include("../../layouts/scripts/notifications.ejs"); %>
-                <%- include("../../layouts/scripts/ListCategory.ejs"); %>
 
 </html>

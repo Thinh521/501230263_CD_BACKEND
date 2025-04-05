@@ -13,11 +13,12 @@ const sortObjects = [
 // List category
 export async function listCaterory(req, res) {
   const search = req.query?.search;
-  const pageSize = !!req.query.pageSize ? parseInt(req.query.pageSize) : 5;
+  const pageSize = !!req.query.pageSize ? parseInt(req.query.pageSize) : 4;
   const page = !!req.query?.page ? parseInt(req.query.page) : 1;
   const skip = (page - 1) * pageSize;
-  const sort = !!req.query?.sort ? req.query.sort : null;
+  let sort = req.query?.sort || "createdAt_DESC"; // Default sort if no sort parameter is given
 
+  // Cấu hình lọc
   let filters = {
     deleteAt: null,
   };
@@ -29,20 +30,25 @@ export async function listCaterory(req, res) {
     };
   }
 
-  // Xử lý sắp xếp
+  // Phân tích giá trị sort và áp dụng vào đối tượng sortCriteria
   let sortCriteria = {};
-  if (sort) {
-    const [field, order] = sort.split("_");
-    sortCriteria[field] = order === "ASC" ? 1 : -1;
+  const sortArray = sort.split("_");
+  if (sortArray.length === 2) {
+    sortCriteria[sortArray[0]] = sortArray[1] === "ASC" ? 1 : -1;
+  } else {
+    sortCriteria = { createdAt: -1 }; // Mặc định sắp xếp theo thời gian tạo giảm dần
   }
 
   try {
+    // Lấy tổng số lượng danh mục để tính phân trang
     const countCategories = await CategoryModel.countDocuments(filters);
+
     const categories = await CategoryModel.find(filters)
-      .sort(sortCriteria) // Thêm sắp xếp tại đây
+      .sort(sortCriteria)
       .skip(skip)
       .limit(pageSize);
 
+    // Trả kết quả về view
     res.render("pages/categories/list", {
       title: "Categories",
       categories: categories,
@@ -64,14 +70,50 @@ export async function createCaterory(req, res) {
   const data = req.body;
 
   try {
+    const categoryExists = await CategoryModel.findOne({
+      code: data.code,
+      deleteAt: null,
+    });
+    if (categoryExists) throw "code";
+
     await CategoryModel.create({
       ...data,
-      createAt: new Date(),
+      createdAt: new Date(),
     });
     res.redirect("/categories");
   } catch (error) {
+    let err = {};
+
+    if (error === "code") err.code = "Mã sản phẩm này đã tồn tại";
+
+    if (error.name === "ValidationError") {
+      Object.keys(error.errors).forEach((key) => {
+        err[key] = error.errors[key].message;
+      });
+    }
+    console.log("err", err);
+
+    res.render("pages/categories/form", {
+      title: "Create categories",
+      mode: "Create",
+      category: { ...data },
+      err,
+    });
+  }
+}
+
+export async function createCategoryByModal(req, res) {
+  const data = req.body;
+
+  try {
+    const category = await CategoryModel.create({
+      ...data,
+      createdAt: new Date(),
+    });
+    res.json({ success: true, category: category });
+  } catch (error) {
     console.log(error);
-    res.send("Tạo loại sản phẩm không thành công");
+    res.json({ success: false, category: {} });
   }
 }
 
@@ -80,15 +122,30 @@ export async function renderPageCreateCategory(req, res) {
     title: "Create categories",
     mode: "Create",
     category: {},
+    err: {},
   });
 }
 
 // -----------------------------------------------------------------
 // Update category
 export async function updateCaterory(req, res) {
-  const { id, ...data } = req.body;
+  const data = req.body;
+  const { id } = req.params;
 
   try {
+    const existingCategory = await CategoryModel.findOne({
+      code: data.code,
+      deleteAt: null,
+      _id: { $ne: new ObjectId(id) },
+    });
+
+    let err = {};
+    if (existingCategory) {
+      err.code = "Mã sản phẩm này đã tồn tại";
+      throw err;
+    }
+
+    // Cập nhật danh mục
     await CategoryModel.updateOne(
       { _id: new ObjectId(id) },
       {
@@ -96,10 +153,16 @@ export async function updateCaterory(req, res) {
         updateAt: new Date(),
       }
     );
+
     res.redirect("/categories");
   } catch (error) {
     console.log(error);
-    res.send("Cập nhật sản phẩm không thành công");
+    res.render("pages/categories/form", {
+      title: "Update categories",
+      mode: "Update",
+      category: { ...data, id },
+      err: error,
+    });
   }
 }
 
@@ -115,6 +178,7 @@ export async function renderPageUpdateCategory(req, res) {
         title: "Create categories",
         mode: "Update",
         category: category,
+        err: {},
       });
     } else {
       res.render("Hiện không có sản phẩm nào phù hợp");
@@ -156,6 +220,7 @@ export async function renderPageDeleteCategory(req, res) {
         title: "Delete categories",
         mode: "Delete",
         category: category,
+        err: {},
       });
     } else {
       res.render("Hiện không có sản phẩm này");

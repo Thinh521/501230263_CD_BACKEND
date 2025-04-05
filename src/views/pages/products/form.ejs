@@ -12,18 +12,22 @@
                 <%- include('../../layouts/side-bar') %>
                     <div class="main-panel">
                         <!-- main -->
-                        <%- include('../../components/categories/list'); %>
+                        <%- include('../../components/products/form'); %>
                             <!-- footer -->
                             <%- include("../../layouts/footer"); %>
                     </div>
         </div>
-        <%- include('../../components/common/modalCategory'); %>
+        <!-- modal -->
 
     </body>
     <!-- scripts -->
     <%- include("../../layouts/scripts/main"); %>
         <%- include("../../layouts/scripts/components"); %>
-            <%- include("../../layouts/scripts/notifications.ejs"); %>
-                <%- include("../../layouts/scripts/ListCategory.ejs"); %>
+            <script>
+                const mode = '<%= mode %>'
+                if (mode === 'Delete') {
+                    $(".categoryInput").attr("disabled", "disabled")
+                }
+            </script>
 
 </html>

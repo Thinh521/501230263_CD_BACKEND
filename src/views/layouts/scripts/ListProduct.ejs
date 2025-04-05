@@ -1,0 +1,51 @@
+<script>
+    function changePage(page) {
+        let urlParams = new URLSearchParams(window.location.search);
+        urlParams.set("page", page);
+        window.location.href = "/products?" + urlParams.toString();
+    }
+
+    function changePageSize(event) {
+        let selectedValue = event.target.value;
+        let urlParams = new URLSearchParams(window.location.search);
+        urlParams.set("page", "1"); // Reset về trang đầu tiên
+        urlParams.set("pageSize", selectedValue);
+        window.location.href = "/products?" + urlParams.toString();
+    }
+
+    function setPageSize() {
+        let urlParams = new URLSearchParams(window.location.search);
+        const pageSize = urlParams.get("pageSize");
+        if (pageSize) {
+            let option = document.querySelector(`#defaultSelect option[value='${pageSize}']`);
+            if (option) option.selected = true;
+        }
+    }
+    document.addEventListener("DOMContentLoaded", setPageSize);
+
+    function nextPage() {
+        let urlParams = new URLSearchParams(window.location.search);
+        const maxPage = parseInt("<%= countPagination %>", 10);
+        let page = parseInt(urlParams.get("page") || "1", 10);
+        if (page < maxPage) {
+            urlParams.set("page", page + 1);
+            window.location.href = "/products?" + urlParams.toString();
+        }
+    }
+
+    function prevPage() {
+        let urlParams = new URLSearchParams(window.location.search);
+        let page = parseInt(urlParams.get("page") || "1", 10);
+        if (page > 1) {
+            urlParams.set("page", page - 1);
+            window.location.href = "/products?" + urlParams.toString();
+        }
+    }
+
+    function changeSort(event) {
+        event.preventDefault();
+        let urlParams = new URLSearchParams(window.location.search);
+        urlParams.set("sort", event.target.value);
+        window.location.href = "/products?" + urlParams.toString();
+    }
+</script>

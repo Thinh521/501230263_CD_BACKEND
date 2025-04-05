@@ -86,15 +86,25 @@
     }
 
     p {
-        margin-bottom: 5px;
+        margin-bottom: 10px;
+    }
+
+    .color-box {
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 50%;
+        margin-right: 5px;
+        box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
     }
 </style>
 
 <div class="content">
     <div class="container-fluid">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-            <h4 class="page-title" style="margin: 0;">Danh sách sản phẩm</h4>
-            <a href="/categories/create" class="btn btn-default">Tạo loại sản phẩm</a>
+            <h4 class="page-title" style="margin: 0;">Danh sách đơn hàng</h4>
+            <a href="/orders/create" class="btn btn-default">Giả lập tạo đơn hàng</a>
             <!-- <a class="btn btn-default" onclick="toggleCategory()">Tạo modal</a> -->
         </div>
         <div class="flex justify-content-end">
@@ -116,40 +126,68 @@
                 </select>
             </div>
         </div>
-        <% if (categories && categories.length> 0) { %>
+        <% if (orders && orders.length> 0) { %>
             <div class="card">
                 <div class="card-body">
                     <table class="table table-head-bg-success">
                         <thead>
                             <tr>
-                                <th scope="col">STT</th>
-                                <th scope="col">Image</th>
-                                <th scope="col">Code</th>
-                                <th scope="col">Name</th>
-                                <th scope="col"></th>
+                                <th scope="col">Mã hóa đơn</th>
+                                <th scope="col">Sản phẩm</th>
+                                <th scope="col">Giảm giá</th>
+                                <th scope="col">Trạng thái</th>
+                                <th scope="col">Tổng hóa đơn</th>
+                                <th></th>
                             </tr>
                         </thead>
-                        <tbody id="listCategory">
-                            <% categories.forEach(function(category, index) { %>
+                        <tbody id="listProduct">
+                            <% orders.forEach(function(order, index) { %>
                                 <tr>
                                     <td>
-                                        <%= index + 1 %>
+                                        <%= order.orderNo %>
                                     </td>
                                     <td>
-                                        <img src="/static/assets/img/<%= category.image %>" alt="image"
-                                            style="width: 100px; height: auto; object-fit: cover; border: 1px solid #ccc;">
+                                        <div class="form-group">
+                                            <% order.orderItems.forEach(function(ordeItem, index) { %>
+                                                <div class="d-flex" style="justify-content: center;">
+                                                    <p>
+                                                        <%= ordeItem.quantity %>
+                                                    </p> - <p>
+                                                        <%= ordeItem.productName %> (<%= ordeItem.productCode %>)
+                                                    </p>
+                                                </div>
+                                                <% }); %>
+                                        </div>
                                     </td>
                                     <td>
-                                        <%= category.code %>
+                                        <%= order.discount %>%
                                     </td>
                                     <td>
-                                        <%= category.name %>
+                                        <%= order.status %>
                                     </td>
                                     <td>
-                                        <a href="/categories/update/<%= category._id %>"
-                                            class="btn btn-success btn-sm">Sửa</a>
-                                        <a href="/categories/delete/<%= category._id %>"
-                                            class="btn btn-danger btn-sm">Xóa</a>
+                                        <%= order.total.toLocaleString() %> VNĐ
+                                    </td>
+                                    <!-- <td>
+                                        <div class="form-group">
+                                            <% if (order && order.colors && order.colors.length> 0) { %>
+                                                <div class="color-list">
+                                                    <% order.colors.forEach(function(color) { %>
+                                                        <div class="color-box" style="background-color: <%= color %>;">
+                                                        </div>
+                                                        <% }); %>
+                                                </div>
+                                                <% } else { %>
+                                                    <span class="text-muted">Không có màu</span>
+                                                    <% } %>
+                                        </div>
+                                    </td> -->
+                                    <td>
+                                        <a href="/orders/update/<%= order._id %>" class="btn btn-success btn-sm">Hoàn
+                                            thành</a>
+                                        <a href="/orders/detail/<%= order._id %>" class="btn btn-success btn-sm">Chi tiết</a>
+                                        <a href="/orders/cancel-form/<%= order._id %>" class="btn btn-danger btn-sm">Hủy
+                                            đơn hàng</a>
                                     </td>
                                 </tr>
                                 <% }); %>

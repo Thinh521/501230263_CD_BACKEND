@@ -12,9 +12,10 @@
                 <%- include('../../layouts/side-bar') %>
                     <div class="main-panel">
                         <!-- main -->
-                        <%- include('../../components/categories/list'); %>
-                            <!-- footer -->
-                            <%- include("../../layouts/footer"); %>
+                        <%- include('../../components/orders/list'); %>
+                            <%- include('../../components/orders/detail'); %>
+                                <!-- footer -->
+                                <%- include("../../layouts/footer"); %>
                     </div>
         </div>
         <%- include('../../components/common/modalCategory'); %>
@@ -24,6 +25,6 @@
     <%- include("../../layouts/scripts/main"); %>
         <%- include("../../layouts/scripts/components"); %>
             <%- include("../../layouts/scripts/notifications.ejs"); %>
-                <%- include("../../layouts/scripts/ListCategory.ejs"); %>
+                <%- include("../../layouts/scripts/ListOrder.ejs"); %>
 
 </html>

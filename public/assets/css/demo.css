@@ -127,3 +127,7 @@
 .justify-content-end {
 	justify-content: end;
 }
+
+.mb-0 {
+	margin-bottom: 0;
+}

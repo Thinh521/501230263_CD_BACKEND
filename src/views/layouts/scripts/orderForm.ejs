@@ -1,0 +1,88 @@
+<script>
+    function addNewOrderItem() {
+        $("#listProduct").append(
+            `
+                <div class="d-flex mb-3 orderItemGroup" style="gap: 15px; align-items: center;">
+                    <div class="btn btn-success" onclick="addNewOrderItem()"><i
+                            class="la la-plus"></i></div>
+                    <select class="form-control max-w-20 itemSelect" name="itemSelect">
+                        <option value="">Chọn sản phẩm</option>
+                        <% products.forEach(function(product) { %>
+                            <option value="<%= product._id %>"
+                                data-colors='<%= JSON.stringify(product.colors) %>'
+                                data-sizes='<%= JSON.stringify(product.sizes) %>'
+                                data-price="<%= product.price %>">
+                                <%= product.name %>
+                            </option>
+                            <% }); %>
+                    </select>
+                    <input name="quantity" type="number" class="form-control categoryInput"
+                        placeholder="Nhập số lượng">
+                    <input name="itemPrice" type="number" class="itemPrice form-control"
+                        placeholder="Mức giảm giá">
+                    <select class="form-control max-w-20 itemColor" name="itemColor"></select>
+                    <select class="form-control max-w-20 itemSize" name="itemSize"></select>
+                    <div class="btn btn-danger itemButtonDelete"><i class="la la-trash"></i></div>
+                </div>
+            `
+        )
+        removeOrderItem()
+        addSelectData();
+    }
+
+    function removeOrderItem() {
+        $(".itemButtonDelete").click(function () {
+            $(this).parent().remove()
+        })
+    }
+    removeOrderItem()
+
+    function addSelectData() {
+        $(".itemSelect").change(function () {
+            const selectProduct = $(this).find("option:selected");
+
+            // Lấy dữ liệu từ thuộc tính data-*
+            const sizesData = selectProduct.attr("data-sizes");
+            const colorsData = selectProduct.attr("data-colors");
+            const price = selectProduct.attr("data-price");
+
+            // Chuyển đổi JSON string thành array (nếu có)
+            const sizes = sizesData ? JSON.parse(sizesData) : [];
+            const colors = colorsData ? JSON.parse(colorsData) : [];
+
+            const orderItemGroup = $(this).closest(".orderItemGroup");
+
+            const sizeSelect = orderItemGroup.find(".itemSize");
+            const colorSelect = orderItemGroup.find(".itemColor");
+            const priceInput = orderItemGroup.find(".itemPrice");
+
+            // Xóa dữ liệu cũ trước khi cập nhật mới
+            sizeSelect.empty();
+            colorSelect.empty();
+
+            // Thêm option mặc định
+            sizeSelect.append(`<option value="">Chọn size</option>`);
+            colorSelect.append(`<option value="">Chọn màu</option>`);
+
+            // Cập nhật danh sách size
+            sizes.forEach(size => {
+                sizeSelect.append(`<option value="${size}">${size}</option>`);
+            });
+
+            // Cập nhật danh sách color
+            colors.forEach(color => {
+                colorSelect.append(`<option value="${color}">${color}</option>`);
+            });
+
+            // Gán giá vào input
+            priceInput.val(price ? price : "");
+        });
+    }
+
+    // Gọi lại function để kích hoạt sự kiện
+    $(document).ready(function () {
+        addSelectData();
+    });
+
+
+</script>

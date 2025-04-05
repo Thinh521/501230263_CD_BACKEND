@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %>
+    </title>
+    <link rel="stylesheet" href="/path/to/your/css/file.css">
+</head>
+
+<style>
+    .color-box {
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 50%;
+        margin-right: 5px;
+        box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    }
+</style>
+
+<body>
+    <div class="content">
+        <div class="container-fluid">
+            <h4 class="page-title">Chi tiết đơn hàng</h4>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label><strong>Mã đơn hàng:</strong></label>
+                        <p>
+                            <%= order.orderNo %>
+                        </p>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Ngày tạo:</strong></label>
+                        <p>
+                            <%= order.createdAt.toLocaleDateString() %>
+                        </p>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Tổng tiền:</strong></label>
+                        <p>
+                            <%= order.total.toLocaleString() %> VND
+                        </p>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Trạng thái:</strong></label>
+                        <p>
+                            <%= order.status %>
+                        </p>
+                    </div>
+
+                    <h5 style="padding-left: 10px;">Địa chỉ giao hàng</h5>
+                    <div class="form-group">
+                        <label><strong>Tên khách hàng:</strong></label>
+                        <p>
+                            <%= order.billingAddress.name %>
+                        </p>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Email:</strong></label>
+                        <p>
+                            <%= order.billingAddress.email %>
+                        </p>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Số điện thoại:</strong></label>
+                        <p>
+                            <%= order.billingAddress.phoneNumber %>
+                        </p>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Địa chỉ:</strong></label>
+                        <p>
+                            <%= order.billingAddress.address %>, <%= order.billingAddress.district %>, <%=
+                                        order.billingAddress.city %>
+                        </p>
+                    </div>
+
+                    <h5 style="padding-left: 10px;">Danh sách sản phẩm</h5>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Tên sản phẩm</th>
+                                    <th>Số lượng</th>
+                                    <th>Giá</th>
+                                    <th>Màu sắc</th>
+                                    <th>Kích thước</th>
+                                    <th>Tổng</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% order.orderItems.forEach(item=> { %>
+                                    <tr>
+                                        <td>
+                                            <%= item.productName %>
+                                        </td>
+                                        <td>
+                                            <%= item.quantity %>
+                                        </td>
+                                        <td>
+                                            <%= item.price.toLocaleString() %> VND
+                                        </td>
+                                        <td>
+                                            <div class="color-box" style="background-color: <%= item.color %>;"></div>
+                                        </td>
+                                        <td>
+                                            <%= item.size %>
+                                        </td>
+                                        <td>
+                                            <%= item.total.toLocaleString() %> VND
+                                        </td>
+                                    </tr>
+                                    <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="card-action">
+                        <a href="/orders" class="btn btn-primary">Quay lại danh sách đơn hàng</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

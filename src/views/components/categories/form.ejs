@@ -1,3 +1,5 @@
+
+
 <div class="content">
     <div class="container-fluid">
         <h4 class="page-title">
@@ -15,7 +17,7 @@
                     <form action="/categories/create" method="post">
                         <% } %>
                             <% if (mode==="Update" ) { %>
-                                <form action="/categories/update" method="post">
+                                <form action="/categories/update/<%=category?._id %>" method="post">
                                     <div class="form-group" style="display: none;">
                                         <input name="id" type="text" class="form-control" id="id"
                                             value="<%= category?._id %>">
@@ -28,33 +30,49 @@
                                                         value="<%= category?._id %>">
                                                 </div>
                                                 <% } %>
-                                                    <div class="form-group">
+                                                    <div
+                                                        class="form-group <%= err?.code && 'has-error has-feedback' %>">
                                                         <label for="code">Nhập mã sản phẩm</label>
                                                         <input name="code" type="text"
                                                             class="form-control categoryInput" id="code"
                                                             value="<%= category?.code %>"
                                                             placeholder="Nhập mã sản phẩm">
+                                                        <small class="form-text text-muted text-danger">
+                                                            <%= err?.code%>
+                                                        </small>
                                                     </div>
-                                                    <div class="form-group">
+                                                    <div
+                                                        class="form-group <%= err?.name && 'has-error has-feedback' %>">
                                                         <label for="name">Nhập tên sản phẩm</label>
                                                         <input name="name" type="text"
                                                             class="form-control categoryInput" id="name"
                                                             value="<%= category?.name %>"
                                                             placeholder="Nhập tên sản phẩm">
+                                                        <small class="form-text text-muted text-danger">
+                                                            <%= err?.name%>
+                                                        </small>
                                                     </div>
-                                                    <div class="form-group">
+                                                    <div
+                                                        class="form-group <%= err?.searchString && 'has-error has-feedback' %>">
                                                         <label for="searchString">Chuỗi tìm kiếm</label>
                                                         <input name="searchString" type="text"
                                                             class="form-control categoryInput" id="searchString"
                                                             value="<%= category?.searchString %>"
                                                             placeholder="Nhập tên chuỗi tìm kiếm">
+                                                        <small class="form-text text-muted text-danger">
+                                                            <%= err?.searchString%>
+                                                        </small>
                                                     </div>
-                                                    <div class="form-group">
+                                                    <div
+                                                        class="form-group <%= err?.image && 'has-error has-feedback' %>">
                                                         <label for="image">Link hình ảnh sản phẩm</label>
                                                         <input name="image" type="text"
                                                             class="form-control categoryInput" id="image"
                                                             value="<%= category?.image %>"
                                                             placeholder="Nhập link ảnh sản phẩm">
+                                                        <small class="form-text text-muted text-danger">
+                                                            <%= err?.image%>
+                                                        </small>
                                                     </div>
                                                     <div class="card-action">
                                                         <button

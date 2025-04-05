@@ -1,0 +1,106 @@
+<style>
+    .color-box {
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 50%;
+        margin-right: 5px;
+        box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    }
+</style>
+
+<div class="content">
+    <div class="container-fluid">
+        <h4 class="page-title">Giả lập tạo đơn hàng mới</h4>
+
+        <div class="card">
+            <div class="card-body">
+                <% if (mode==="Create" ) { %>
+                    <form action="/orders/simulatorCreate" method="post">
+                        <% } %>
+                            <% if (mode==="detail" ) { %>
+                                <form action="/orders/detail" method="post">
+                                    <% } %>
+                                        <div class="form-group">
+                                            <label for="discount">Mã giảm giá</label>
+                                            <input name="discount" type="number" class="form-control"
+                                                value="<%= order?.discount || '' %>" placeholder="Nhập mã giảm giá">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="product">Danh sách sản phẩm</label>
+                                            <div id="listProduct">
+                                                <div class="d-flex mb-3 orderItemGroup"
+                                                    style="gap: 15px; align-items: center;">
+                                                    <button type="button" class="btn btn-success"
+                                                        onclick="addNewOrderItem()">
+                                                        <i class="la la-plus"></i>
+                                                    </button>
+                                                    <select class="form-control itemSelect" name="itemSelect" required>
+                                                        <option value="">Chọn sản phẩm</option>
+                                                        <% products.forEach(function(product) { %>
+                                                            <option value="<%= product._id %>"
+                                                                data-colors='<%= JSON.stringify(product.colors) %>'
+                                                                data-sizes='<%= JSON.stringify(product.sizes) %>'
+                                                                data-price="<%= product.price %>">
+                                                                <%= product.name %>
+                                                            </option>
+                                                            <% }); %>
+                                                    </select>
+                                                    <input name="quantity" type="number" class="form-control" min="1"
+                                                        placeholder="Nhập số lượng" required>
+                                                    <input name="itemPrice" type="number" class="form-control itemPrice"
+                                                        placeholder="Giá sản phẩm">
+                                                    <select class="form-control itemColor" name="itemColor"
+                                                        required></select>
+                                                    <select class="form-control itemSize" name="itemSize"
+                                                        required></select>
+                                                    <button type="button" class="btn btn-danger itemButtonDelete">
+                                                        <i class="la la-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <h5 style="padding-left: 10px;">Địa chỉ giao hàng</h5>
+                                        <div class="form-group">
+                                            <label for="billingName">Tên khách hàng</label>
+                                            <input id="billingName" name="billingName" type="text" class="form-control"
+                                                placeholder="Nhập tên khách hàng" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="billingEmail">Email khách hàng</label>
+                                            <input id="billingEmail" name="billingEmail" type="email"
+                                                class="form-control" placeholder="Nhập email khách hàng" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="billingPhone">Số điện thoại</label>
+                                            <input id="billingPhone" name="billingPhone" type="text"
+                                                class="form-control" placeholder="Nhập số điện thoại" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="billingAddress">Địa chỉ</label>
+                                            <input id="billingAddress" name="billingAddress" type="text"
+                                                class="form-control" placeholder="Nhập địa chỉ" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="billingDistrict">Quận/Huyện</label>
+                                            <input id="billingDistrict" name="billingDistrict" type="text"
+                                                class="form-control" placeholder="Nhập quận/huyện" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="billingCity">Thành phố</label>
+                                            <input id="billingCity" name="billingCity" type="text" class="form-control"
+                                                placeholder="Nhập thành phố" required>
+                                        </div>
+
+                                        <div class="card-action">
+                                            <button class="btn btn-success" type="submit">Tạo</button>
+                                            <a href="/orders" class="btn btn-primary">Danh sách hóa đơn</a>
+                                        </div>
+                                </form>
+            </div>
+        </div>
+    </div>
+</div>

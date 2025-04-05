@@ -1,0 +1,184 @@
+<style>
+    .color-box {
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 50%;
+        margin-right: 5px;
+        box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    }
+</style>
+
+<div class="content">
+    <div class="container-fluid">
+        <h4 class="page-title">
+            <% if (mode==="Create" ) { %>
+                Tạo sản phẩm mới
+                <% } else if (mode==="Update" ) { %>
+                    Cập nhật loại sản phẩm
+                    <% } else if (mode==="Delete" ) { %>
+                        Bạn có đồng ý xóa sản phẩm <%= product?.name %>
+                            <% } %>
+        </h4>
+        <div class="card">
+            <div class="card-body">
+                <% if (mode==="Create" ) { %>
+                    <form action="/products/create" method="post">
+                        <% } %>
+                            <% if (mode==="Update" ) { %>
+                                <form action="/products/update/<%=product?._id %>" method="post">
+                                    <div class="form-group" style="display: none;">
+                                        <input name="id" type="text" class="form-control" id="id"
+                                            value="<%= product?._id %>">
+                                    </div>
+                                    <% } %>
+                                        <% if (mode==="Delete" ) { %>
+                                            <form action="/products/delete" method="post">
+                                                <div class="form-group" style="display: none;">
+                                                    <input name="id" type="text" class="form-control" id="id"
+                                                        value="<%= product?._id %>">
+                                                </div>
+                                                <% } %>
+                                                    <div
+                                                        class="form-group <%= err?.code && 'has-error has-feedback' %>">
+                                                        <label for="code">Mã sản phẩm</label>
+                                                        <input name="code" type="text"
+                                                            class="form-control categoryInput" id="code"
+                                                            value="<%= product?.code %>" placeholder="Nhập mã sản phẩm">
+                                                        <small class="form-text text-muted text-danger">
+                                                            <%= err?.code%>
+                                                        </small>
+                                                    </div>
+                                                    <div
+                                                        class="form-group <%= err?.name && 'has-error has-feedback' %>">
+                                                        <label for="name">Tên sản phẩm</label>
+                                                        <input name="name" type="text"
+                                                            class="form-control categoryInput" id="name"
+                                                            value="<%= product?.name %>"
+                                                            placeholder="Nhập tên sản phẩm">
+                                                        <small class="form-text text-muted text-danger">
+                                                            <%= err?.name%>
+                                                        </small>
+                                                    </div>
+                                                    <div
+                                                        class="form-group <%= err?.price && 'has-error has-feedback' %>">
+                                                        <label for="price">Giá sản phẩm</label>
+                                                        <input name="price" type="text"
+                                                            class="form-control categoryInput" id="price"
+                                                            value="<%= product?.price %>"
+                                                            placeholder="Nhập giá sản phẩm">
+                                                        <small class="form-text text-muted text-danger">
+                                                            <%= err?.price%>
+                                                        </small>
+                                                    </div>
+                                                    <div
+                                                        class="form-group <%= err?.searchString && 'has-error has-feedback' %>">
+                                                        <label for="searchString">Chuỗi tìm kiếm</label>
+                                                        <input name="searchString" type="text"
+                                                            class="form-control categoryInput" id="searchString"
+                                                            value="<%= product?.searchString %>"
+                                                            placeholder="Nhập tên chuỗi tìm kiếm">
+                                                        <small class="form-text text-muted text-danger">
+                                                            <%= err?.searchString%>
+                                                        </small>
+                                                    </div>
+                                                    <div
+                                                        class="form-group <%= err?.image ? 'has-error has-feedback' : '' %>">
+                                                        <label for="image">Link hình ảnh sản phẩm</label>
+                                                        <input name="image" type="text"
+                                                            class="form-control categoryInput" id="image"
+                                                            value="<%= typeof product?.image === 'string' ? product.image : '' %>"
+                                                            placeholder="Nhập link ảnh sản phẩm">
+                                                        <small class="form-text text-muted text-danger">
+                                                            <%= err?.image %>
+                                                        </small>
+                                                    </div>
+                                                    <div
+                                                        class="form-group <%= err?.sizes ? 'has-error has-feedback' : '' %>">
+                                                        <label for="sizes">Size</label>
+                                                        <% sizes.forEach(function(size) { %>
+                                                            <label class="form-check-label">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                    name="sizes" value="<%= size %>"
+                                                                    <%=Array.isArray(product?.sizes) &&
+                                                                    product.sizes.includes(size) ? "checked" : "" %> >
+                                                                <span class="form-check-sign">
+                                                                    <%= size %>
+                                                                </span>
+                                                            </label>
+                                                            <% }); %>
+                                                                <small class="form-text text-muted text-danger">
+                                                                    <%= err?.sizes %>
+                                                                </small>
+                                                    </div>
+                                                    <div
+                                                        class="form-group <%= err?.colors ? 'has-error has-feedback' : '' %>">
+                                                        <label for="colors">Màu</label>
+                                                        <% colors.forEach(function(color) { %>
+                                                            <label class="form-check-label">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                    name="colors" value="<%= color %>"
+                                                                    <%=Array.isArray(product?.colors) &&
+                                                                    product.colors.includes(color) ? "checked" : "" %> >
+                                                                <span class="form-check-sign"
+                                                                    style="background-color: <%= color %>;"></span>
+                                                            </label>
+                                                            <% }); %>
+                                                                <small class="form-text text-muted text-danger">
+                                                                    <%= err?.colors %>
+                                                                </small>
+                                                    </div>
+                                                    <div
+                                                        class="form-group <%= err?.active && 'has-error has-feedback' %>">
+                                                        <label for="active">Active</label>
+                                                        <input id="active" name="active" type="checkbox" checked
+                                                            data-toggle="toggle" data-onstyle="default"
+                                                            data-style="btn-round" <%=product?.action==="on" ? "checked"
+                                                            : "" %>>
+                                                    </div>
+                                                    <div
+                                                        class="form-group <%= err?.description ? 'has-error has-feedback' : '' %>">
+                                                        <label for="description">Description</label>
+                                                        <textarea class="form-control" id="description"
+                                                            name="description"
+                                                            rows="5"><%= product?.description || '' %></textarea>
+                                                    </div>
+
+                                                    <div
+                                                        class="form-group <%= err?.information ? 'has-error has-feedback' : '' %>">
+                                                        <label for="information">Information</label>
+                                                        <textarea class="form-control" id="information"
+                                                            name="information"
+                                                            rows="5"><%= product?.information || '' %></textarea>
+                                                    </div>
+                                                    <div
+                                                        class="form-group <%= err?.categoryId ? 'has-error has-feedback' : '' %>">
+                                                        <label for="categoryId">Category</label>
+                                                        <select class="form-control form-control max-w-20"
+                                                            id="defaultSelect" name="categoryId"
+                                                            style="margin-bottom: 4px;">
+                                                            <% categories.forEach(function(category) { %>
+                                                                <option value="<%= category._id %>"
+                                                                    <%=(product?.categoryId?.toString()===category._id.toString())
+                                                                    ? "selected" : "" %>>
+                                                                    <%= category.name %>
+                                                                </option>
+                                                                <% }); %>
+                                                        </select>
+                                                    </div>
+                                                    <div class="card-action">
+                                                        <button
+                                                            class="btn <%= mode === 'Delete' ? 'btn-danger' : 'btn-success' %>"
+                                                            type="submit">
+                                                            <%= mode==="Create" ? "Tạo" : mode==="Update" ? "Sửa"
+                                                                : "Xóa" %>
+                                                        </button>
+                                                        <a href="/products" class="btn btn-primary">Danh sách sản
+                                                            phẩm</a>
+                                                    </div>
+                                            </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,13 +1,10 @@
+<!-- state: primary, info, success, warning, danger -->
 <script>
-    $('#displayNotif').on('click', function () {
-        var placementFrom = $('#notify_placement_from option:selected').val();
-        var placementAlign = $('#notify_placement_align option:selected').val();
-        var state = $('#notify_state option:selected').val();
-        var style = $('#notify_style option:selected').val();
+    function showNotify(notice, state, style) {
         var content = {};
 
-        content.message = 'Turning standard Bootstrap alerts into "notify" like notifications';
-        content.title = 'Bootstrap notify';
+        content.message = notice;
+        content.title = 'Notice';
         if (style == "withicon") {
             content.icon = 'la la-bell';
         } else {
@@ -19,10 +16,10 @@
         $.notify(content, {
             type: state,
             placement: {
-                from: placementFrom,
-                align: placementAlign
+                from: "bottom",
+                align: "right"
             },
             time: 1000,
         });
-    });
+    }
 </script>

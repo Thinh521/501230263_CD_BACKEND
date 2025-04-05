@@ -16,6 +16,7 @@
   },
   "scripts": {
     "start": "nodemon src/app.js",
+    "db:seed": "node src/seeder/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

@@ -1,0 +1,45 @@
+<div class="content">
+    <div class="container-fluid">
+        <h4 class="page-title">
+            Tạo loại sản phẩm mới
+        </h4>
+        <div class="card">
+            <div class="card-body">
+                <% if (mode==="Create" ) { %>
+                    <form action="/categories/create" method="post">
+                        <% } %>
+
+                            <div class="form-group">
+                                <label for="code">Nhập mã sản phẩm</label>
+                                <input name="code" type="text" class="form-control categoryInput" id="codeModal"
+                                    value="<%= category?.code %>" placeholder="Nhập mã sản phẩm">
+                                <small class="form-text text-muted text-danger">
+                                </small>
+                            </div>
+                            <div class="form-group">
+                                <label for=" name">Nhập tên sản phẩm</label>
+                                <input name="name" type="text" class="form-control categoryInput" id="nameModal"
+                                    value="<%= category?.name %>" placeholder="Nhập tên sản phẩm">
+                                <small class="form-text text-muted text-danger">
+                                </small>
+                            </div>
+                            <div class="form-group">
+                                <label for=" searchString">Chuỗi tìm kiếm</label>
+                                <input name="searchString" type="text" class="form-control categoryInput"
+                                    id="searchStringModal" value="<%= category?.searchString %>"
+                                    placeholder="Nhập tên chuỗi tìm kiếm">
+                                <small class="form-text text-muted text-danger">
+                                </small>
+                            </div>
+                            <div class="form-group">
+                                <label for="image">Link hình ảnh sản phẩm</label>
+                                <input name="image" type="text" class="form-control categoryInput" id="imageModal"
+                                    value="<%= category?.image %>" placeholder="Nhập link ảnh sản phẩm">
+                                <small class="form-text text-muted text-danger">
+                                </small>
+                            </div>
+                    </form>
+            </div>
+        </div>
+    </div>
+</div>

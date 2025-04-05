@@ -5,7 +5,7 @@ import mongoConnect from "./mongo/mongoConnecter.js";
 import bodyParser from "body-parser";
 
 const app = express();
-const port = 5001;
+const port = 5002;
 const _dirname = path.resolve();
 
 mongoConnect();
